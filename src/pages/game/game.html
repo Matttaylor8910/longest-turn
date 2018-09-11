@@ -1,6 +1,11 @@
 <ion-header>
 
   <ion-navbar>
+    <ion-buttons start *ngIf="game">
+      <button ion-button color="danger" (click)="reset()" [disabled]="game && game.players.length === 0">
+        Reset
+      </button>
+    </ion-buttons>
     <ion-title>{{ game ? game.name : '' }}</ion-title>
     <ion-buttons end *ngIf="game">
       <button ion-button (click)="addEditPlayer(undefined)" [disabled]="game && game.players.length > 5">
@@ -13,17 +18,27 @@
 
 
 <ion-content>
-    <div class="catan-grid" *ngIf="game">
-      <div class="player-row catan-{{player.color}}" *ngFor="let player of game.players" (click)="addEditPlayer(player)">
-        <div class="name">{{ player.name }}</div>
-        <div class="time">{{ player.time | time }}</div>
-      </div>
-    </div>
+  <!-- setup state -->
+  <ion-list class="catan-grid" reorder="true" (ionItemReorder)="reorderItems($event)" *ngIf="game && game.state === 'setup'">
+    <ion-item class="player-row catan-{{player.color}}" *ngFor="let player of game.players" (click)="addEditPlayer(player)">
+      <div class="name" text-center>{{ player.name }}</div>
+    </ion-item>
+  </ion-list>
+
+  <!-- game started state -->
+  <div *ngIf="game && game.state === 'started'">
+    Game has started
+
+    <ion-card *ngIf="game.currentPlayer">
+      <div>{{ game.currentPlayer.name }}</div>
+      <div>{{ game.currentPlayer.startTime | time }}</div>
+    </ion-card>
+  </div>
 </ion-content>
 
 
 <ion-footer>
-  <ion-toolbar (click)="reset()">
+  <ion-toolbar (click)="startGame()">
     <ion-title>Start Game</ion-title>
   </ion-toolbar>
 </ion-footer>

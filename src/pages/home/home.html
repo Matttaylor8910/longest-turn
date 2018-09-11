@@ -1,20 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Games List
+      Longest Turn
     </ion-title>
-    <ion-buttons end>
-      <button ion-button (click)="newGame()">
-        <ion-icon name="add"></ion-icon> New
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="games">
-    <button ion-item *ngFor="let game of games" (click)="goToGame(game)">
-      {{ game.name }}
-    </button>
-  </ion-list>
+  <button ion-button small color="primary" [navPush]="gamePage">Let's play</button>
 </ion-content>

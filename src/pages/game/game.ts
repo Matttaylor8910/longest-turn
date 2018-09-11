@@ -17,17 +17,21 @@ export class GamePage {
     private db: DatabaseProvider,
     private modalCtrl: ModalController
   ) {
-    db.getGame(navParams.get('gameId')).subscribe(game => {
-      this.game = game;
-    });
+    this.game = JSON.parse(localStorage.getItem('longestTurn') || '{}');
+    if (!this.game || !this.game.players) {
+      this.reset();
+    }
   }
 
+  reset() {
+    this.game = {name: 'Catan', players: [], state: 'setup', turn: 0};
+  }
+  
   addEditPlayer(player) {
     let options = {
       name: player ? player.name : '',
       color: player ? player.color : this.getSuggestedColor(),
       time: player ? player.time : 0,
-      position: player ? player.position : this.game.players.length,
       newPlayer: player === undefined
     };
     let modal = this.modalCtrl.create(AddPlayerModalPage, options);
@@ -42,7 +46,7 @@ export class GamePage {
   getSuggestedColor() {
     let suggestedColor, playerColors = _.map(this.game.players, 'color');
     this.db.colors.forEach(color => {
-      if (!playerColors.includes(color)) {
+      if (!suggestedColor && !playerColors.includes(color)) {
         suggestedColor = color;
       }
     });
@@ -73,6 +77,39 @@ export class GamePage {
       }
     }
 
-    this.db.updateGamePlayers(this.game);
+    this.updatePlayers();
+  }
+
+  reorderItems(indexes) {
+    let element = this.game.players[indexes.from];
+    this.game.players.splice(indexes.from, 1);
+    this.game.players.splice(indexes.to, 0, element);
+
+    this.updatePlayers();
+  }
+
+  updatePlayers() {
+    this.game.players.forEach((player, index) => {
+      player.index = index;
+    });
+
+    this.save();
+  }
+
+  startGame() {
+    this.game.currentPlayer = _.extend(this.game.players[0], {
+      startTime: Date.now()
+    });
+
+    this.setGameState('started');
+    this.save();
+  }
+
+  setGameState(state) {
+    this.game.state = state;
+  }
+
+  save() {
+    localStorage.setItem('longestTurn', JSON.stringify(this.game));
   }
 }
