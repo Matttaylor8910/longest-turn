@@ -14,3 +14,48 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+ion-buttons {
+    ion-icon.icon.icon-ios.ion-ios-add {
+        font-size: 24px;
+        font-weight: bold;
+        padding-right: 5px;
+    }
+}
+
+.text-input-ios {
+    border: 1px solid #aaa;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.catan-red {
+    background: red;
+    color: #fff;
+}
+.catan-blue {
+    background: blue;
+    color: #fff;
+}
+.catan-green {
+    background: green;
+    color: #fff;
+}
+.catan-orange {
+    background: orange;
+    color: #fff;
+}
+.catan-brown {
+    background: brown;
+    color: #fff;
+}
+.catan-white {
+    background: white;
+    color: #000;
+}

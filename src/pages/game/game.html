@@ -1,0 +1,29 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ game ? game.name : '' }}</ion-title>
+    <ion-buttons end *ngIf="game">
+      <button ion-button (click)="addEditPlayer(undefined)" [disabled]="game && game.players.length > 5">
+        <ion-icon name="add"></ion-icon> Add
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+    <div class="catan-grid" *ngIf="game">
+      <div class="player-row catan-{{player.color}}" *ngFor="let player of game.players" (click)="addEditPlayer(player)">
+        <div class="name">{{ player.name }}</div>
+        <div class="time">{{ player.time | time }}</div>
+      </div>
+    </div>
+</ion-content>
+
+
+<ion-footer>
+  <ion-toolbar (click)="reset()">
+    <ion-title>Start Game</ion-title>
+  </ion-toolbar>
+</ion-footer>

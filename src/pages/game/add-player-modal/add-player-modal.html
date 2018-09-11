@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button (click)="close()">
+        Cancel
+      </button>
+    </ion-buttons>
+    <ion-title>{{isNew ? 'Add' : 'Update'}} Player</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()">
+        Save
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-input name="name" placeholder="Name" [(ngModel)]="player.name" *ngIf="player"></ion-input>
+
+  <section class="colors-section" *ngIf="player && colors">
+    <div class="catan-{{color}}" *ngFor="let color of colors" (click)="selectColor(color)">
+      <div class="checkmark" *ngIf="color === player.color">
+        <ion-icon name="checkmark"></ion-icon>
+      </div>
+    </div>
+  </section>
+</ion-content>
